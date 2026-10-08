@@ -1,0 +1,1525 @@
+import React, { useState, useEffect, useMemo } from 'react';
+import {
+  BookOpen,
+  Award,
+  CheckCircle2,
+  Clock,
+  Flame,
+  Moon,
+  Sun,
+  Search,
+  Sparkles,
+  ChevronRight,
+  ArrowLeft,
+  Check,
+  RotateCcw,
+  FileText,
+  LayoutDashboard,
+  Calendar,
+  TrendingUp,
+  Bookmark,
+  Share2,
+  HelpCircle,
+  FolderGit2,
+  Copy,
+  Plus,
+  Trash2,
+  Play,
+  BarChart3,
+  Volume2,
+  Star,
+  CheckSquare,
+  Compass,
+  GraduationCap
+} from 'lucide-react';
+
+const MATERI_DATA = [
+  {
+    id: 'mat-1',
+    title: 'Keagungan Al-Qur\'an dan Sumber Hukum Islam',
+    category: 'al-quran',
+    categoryLabel: 'Al-Qur\'an Hadis',
+    level: 'Dasar',
+    duration: '15 Menit',
+    summary: 'Memahami kedudukan Al-Qur\'an sebagai wahyu Allah SWT, mu\'jizat terbesar, dan sumber hukum primer dalam kehidupan seorang Muslim.',
+    arabicQuote: 'إِنَّا نَحْنُ نَزَّلْنَا الذِّكْرَ وَإِنَّا لَهُ لَحَافِظُونَ',
+    transliteration: 'Inna nahnu nazzalnadz-dzikra wa inna lahu lahafizhun',
+    translation: 'Sesungguhnya Kamilah yang menurunkan Al-Qur\'an, dan pasti Kami (pula) yang memeliharanya. (QS. Al-Hijr: 9)',
+    content: [
+      'Al-Qur\'an secara bahasa berasal dari kata qara\'a yang berarti bacaan atau sesuatu yang dibaca berulang-ulang.',
+      'Secara istilah, Al-Qur\'an adalah kalam Allah SWT yang diturunkan kepada Nabi Muhammad SAW melalui Malaikat Jibril as. secara berangsur-angsur dan bernilai ibadah bagi yang membacanya.',
+      'Fungsi Al-Qur\'an antara lain sebagai Al-Huda (petunjuk), Al-Furqan (pembeda antara yang haq dan batil), serta Asy-Syifa (penawar/obat jiwa).',
+      'Hadis merupakan sumber hukum kedua setelah Al-Qur\'an yang berfungsi merinci, memperjelas, dan menguatkan hukum-hukum dalam Al-Qur\'an.'
+    ],
+    points: [
+      'Al-Qur\'an dijamin keasliannya oleh Allah SWT hingga akhir zaman.',
+      'Membaca satu huruf Al-Qur\'an bernilai 10 kebaikan.',
+      'Hadis mutawatir, hasan, dan da\'if memiliki tingkatan hujjah yang berbeda.'
+    ]
+  },
+  {
+    id: 'mat-2',
+    title: 'Konsep Tauhid dan Indahnya Akidah Islam',
+    category: 'akidah',
+    categoryLabel: 'Akidah Akhlak',
+    level: 'Dasar',
+    duration: '12 Menit',
+    summary: 'Mengenal cabang-cabang Tauhid (Rububiyah, Uluhiyah, Asma wa Sifat) serta pengaruhnya terhadap ketenangan jiwa.',
+    arabicQuote: 'قُلْ هُوَ اللَّهُ أَحَدٌ ۝ اللَّهُ الصَّمَدُ',
+    transliteration: 'Qul huwallahu ahad, Allahus-samad',
+    translation: 'Katakanlah (Muhammad), "Dialah Allah, Yang Maha Esa. Allah tempat meminta segala sesuatu." (QS. Al-Ikhlas: 1-2)',
+    content: [
+      'Tauhid Rububiyah adalah mengesakan Allah SWT dalam segala perbuatan-Nya seperti mencipta, memberi rezeki, dan mengatur alam semesta.',
+      'Tauhid Uluhiyah adalah mengesakan Allah SWT dalam segala bentuk peribadahan dan murni menujukan doa serta penghambaan hanya kepada-Nya.',
+      'Tauhid Asma wa Sifat adalah menetapkan nama-nama dan sifat-sifat Allah sebagaimana yang tercantum dalam Al-Qur\'an dan As-Sunnah tanpa membagaimanakan (takyif) atau menyerupakan (tamtsil).',
+      'Manfaat Tauhid membebaskan manusia dari penghambaan kepada makhluk menuju penghambaan murni kepada Sang Pencipta.'
+    ],
+    points: [
+      'Memahami 3 pembagian Tauhid secara praktis harian.',
+      'Menghindari perbuatan syirik kecil (riya) dan syirik besar.',
+      'Menumbuhkan rasa takut (khauf) dan harapan (raja\') yang seimbang.'
+    ]
+  },
+  {
+    id: 'mat-3',
+    title: 'Tata Cara Sholat Fardhu dan Sunnah Sesuai Sunnah',
+    category: 'fikih',
+    categoryLabel: 'Fikih',
+    level: 'Dasar',
+    duration: '20 Menit',
+    summary: 'Panduan rinci rukun, syarat sah, dan pembatal sholat serta pentingnya tuma\'ninah dalam beribadah.',
+    arabicQuote: 'وَأَقِيمُوا الصَّلَاةَ وَآتُوا الزَّكَاةَ وَارْكَعُوا مَعَ الرَّاكِعِينَ',
+    transliteration: 'Wa aqimush-shalata wa atuz-zakata wark\'u ma\'ar-raki\'in',
+    translation: 'Dan laksanakanlah shalat, tunaikanlah zakat, dan ruku\'lah bersama orang-orang yang ruku\'. (QS. Al-Baqarah: 43)',
+    content: [
+      'Sholat adalah tiang agama. Barangsiapa menegakkannya maka ia menegakkan agama, dan barangsiapa meninggalkannya maka ia meruntuhkan agama.',
+      'Syarat sah sholat meliputi suci dari hadats kecil/besar, menutup aurat, menghadap kiblat, dan masuk waktu sholat.',
+      'Rukun sholat terdiri dari 13 perkara mulai dari niat, takbiratul ihram, membaca Al-Fatihah, ruku\' dengan tuma\'ninah, hingga salam.',
+      'Sholat Sunnah Rawatib (Muakkad) sangat dianjurkan untuk menyempurnakan kekurangan pada sholat fardhu.'
+    ],
+    points: [
+      'Pentingnya Tuma\'ninah (tenang sejenak) pada ruku\', i\'tidal, dan sujud.',
+      'Sholat berjamaah memiliki keutamaan 27 derajat dibanding sholat sendirian.',
+      'Memahami khusyu\' sebagai ruh dari ibadah sholat.'
+    ]
+  },
+  {
+    id: 'mat-4',
+    title: 'Sejarah Dakwah Rasulullah Periode Makkah & Madinah',
+    category: 'ski',
+    categoryLabel: 'Sejarah Kebudayaan Islam',
+    level: 'Menengah',
+    duration: '25 Menit',
+    summary: 'Napak tilas perjuangan Nabi Muhammad SAW dalam membina akhlak, persaudaraan Anshar-Migrasi Muhajirin, dan Piagam Madinah.',
+    arabicQuote: 'لَقَدْ كَانَ لَكُمْ فِي رَسُولِ اللَّهِ أُسْوَةٌ حَسَنَةٌ',
+    transliteration: 'Laqad kana lakum fi rasulillahi uswatun hasanah',
+    translation: 'Sungguh, telah ada pada (diri) Rasulullah itu suri teladan yang baik bagimu. (QS. Al-Ahzab: 21)',
+    content: [
+      'Periode Makkah berfokus pada pembinaan akidah tauhid dan ketahanan mental para sahabat di tengah tekanan kaum Quraisy.',
+      'Hijrah ke Madinah menjadi titik balik (al-fath) pembentukan masyarakat Islam yang inklusif, adil, dan beradab.',
+      'Pembangunan Masjid Nabawi menjadi pusat ibadah, pemerintahan, pendidikan, dan konsolidasi sosial umat.',
+      'Piagam Madinah merupakan konstitusi tertulis pertama di dunia yang menjamin hak asasi dan toleransi antar pemeluk agama.'
+    ],
+    points: [
+      'Strategi dakwah secara sembunyi-sembunyi (sirriyyah) lalu terang-terangan (jahriyyah).',
+      'Prinsip persaudaraan (Ukhuwah) antara kaum Muhajirin dan Anshar.',
+      'Keteladanan Rasulullah dalam kepemimpinan dan diplomasi damai.'
+    ]
+  },
+  {
+    id: 'mat-5',
+    title: 'Prinsip Dasar Muamalah dan Ekonomi Syariah',
+    category: 'muamalah',
+    categoryLabel: 'Muamalah',
+    level: 'Menengah',
+    duration: '18 Menit',
+    summary: 'Memahami larangan Riba, Gharar, dan Maysir serta transaksi jual beli modern yang halal dan berkah.',
+    arabicQuote: 'وَأَحَلَّ اللَّهُ الْبَيْعَ وَحَرَّمَ الرِّبَا',
+    transliteration: 'Wa ahallallahul-bai\'a wa harramar-riba',
+    translation: 'Dan Allah telah menghalalkan jual beli dan mengharamkan riba. (QS. Al-Baqarah: 275)',
+    content: [
+      'Muamalah adalah aturan syariat yang mengatur hubungan antar manusia dalam urusan duniawi, khususnya harta dan transaksi.',
+      'Hukum asal dalam muamalah adalah boleh (mubah), kecuali ada dalil yang melarangnya.',
+      'Tiga larangan utama transaksi syariah: Riba (bunga/tambahan bathil), Gharar (ketidakjelasan barang/akad), dan Maysir (perjudian/spekulasi).',
+      'Akad-akad populer meliputi Murabahah (jual beli untung rugi disepakati), Mudharabah (bagi hasil), dan Wadi\'ah (titipan).'
+    ],
+    points: [
+      'Membedakan bunga bank konvensional dengan bagi hasil bank syariah.',
+      'Etika jual beli online: kejujuran spesifikasi barang dan ketiadaan penipuan.',
+      'Pentingnya keberkahan rezeki halal dalam membentuk akhlak keluarga.'
+    ]
+  },
+  {
+    id: 'mat-6',
+    title: 'Adab Berbakti kepada Orang Tua (Birrul Walidain)',
+    category: 'akidah',
+    categoryLabel: 'Akidah Akhlak',
+    level: 'Dasar',
+    duration: '10 Menit',
+    summary: 'Keutamaan berbakti kepada kedua orang tua dan bahaya durhaka (Uququl Walidain) dalam pandangan Islam.',
+    arabicQuote: 'وَوَصَّيْنَا الْإِنْسَانَ بِوَالِدَيْهِ إِحْسَانًا',
+    transliteration: 'Wa wassaynal-insana biwalidayhi ihsana',
+    translation: 'Dan Kami perintahkan kepada manusia agar berbuat baik kepada kedua orang tuanya. (QS. Al-Ahqaf: 15)',
+    content: [
+      'Birrul Walidain berada pada tingkatan tertinggi kewajiban seorang Muslim setelah tauhid kepada Allah SWT.',
+      'Ridho Allah bergantung pada ridho kedua orang tua, dan murka Allah bergantung pada murka kedua orang tua.',
+      'Cara berbakti ketika orang tua masih hidup: mendoakan, berkata lembut (tidak mengucapkan "ah"), mementingkan kebutuhan mereka, dan mentaati perintah yang tidak bermaksiat.',
+      'Cara berbakti ketika orang tua telah meninggal: mendoakan ampunan, menyambung silaturahmi dengan kerabat orang tua, dan menunaikan janji/wasiat mereka.'
+    ],
+    points: [
+      'Doa anak soleh adalah amalan jariah yang tidak terputus setelah kematian.',
+      'Ibu memiliki hak keutamaan 3 kali lebih besar dibanding ayah.',
+      'Santun dalam berkomunikasi dan menundukkan pandangan di depan orang tua.'
+    ]
+  }
+];
+
+const KUIS_DATA = [
+  {
+    id: 'q-1',
+    category: 'al-quran',
+    question: 'Surah apakah dalam Al-Qur\'an yang menyebutkan bahwa Allah SWT sendiri yang memelihara keaslian Al-Qur\'an?',
+    options: ['QS. Al-Baqarah: 185', 'QS. Al-Hijr: 9', 'QS. Al-Ikhlas: 1-4', 'QS. Al-Ma\'idah: 3'],
+    correctIndex: 1,
+    explanation: 'QS. Al-Hijr ayat 9 menegaskan: "Inna nahnu nazzalnadz-dzikra wa inna lahu lahafizhun" (Sesungguhnya Kami yang menurunkan Al-Qur\'an dan Kami yang memeliharanya).'
+  },
+  {
+    id: 'q-2',
+    category: 'akidah',
+    question: 'Mengesakan Allah SWT dalam segala perbuatan-Nya seperti menciptakan alam semesta dan memberi rezeki disebut Tauhid...',
+    options: ['Tauhid Uluhiyah', 'Tauhid Rububiyah', 'Tauhid Asma wa Sifat', 'Tauhid Mulkiyah'],
+    correctIndex: 1,
+    explanation: 'Tauhid Rububiyah adalah meyakini keesaan Allah dalam tindakan penciptaan, kepemilikan, dan pengawasan alam semesta.'
+  },
+  {
+    id: 'q-3',
+    category: 'fikih',
+    question: 'Manakah di bawah ini yang TERMASUK rukun sholat (bukan syarat sah)?',
+    options: ['Suci dari hadats', 'Menutup aurat', 'Membaca Al-Fatihah', 'Menghadap kiblat'],
+    correctIndex: 2,
+    explanation: 'Membaca Al-Fatihah adalah bagian dari rukun sholat (perbuatan/bacaan dalam sholat). Suci, menutup aurat, dan menghadap kiblat adalah syarat sah (harus dipenuhi sebelum sholat).'
+  },
+  {
+    id: 'q-4',
+    category: 'ski',
+    question: 'Dokumen perjanjian bersejarah yang dibuat Nabi Muhammad SAW di Madinah untuk mengatur toleransi antar pemeluk agama dinamakan...',
+    options: ['Perjanjian Hudaibiyah', 'Piagam Madinah', 'Fathu Makkah', 'Bai\'at\' Aqabah'],
+    correctIndex: 1,
+    explanation: 'Piagam Madinah (Sahifatul Madinah) adalah konstitusi bertulis pertama yang menjamin kebebasan beragama dan persatuan warga Madinah.'
+  },
+  {
+    id: 'q-5',
+    category: 'muamalah',
+    question: 'Transaksi jual beli yang mengandung ketidakjelasan barang, harga, atau waktu penyerahan yang merugikan salah satu pihak dinamakan...',
+    options: ['Riba', 'Gharar', 'Maysir', 'Mudharabah'],
+    correctIndex: 1,
+    explanation: 'Gharar adalah penipuan atau ketidakpastian yang tidak jelas dalam akad transaksi keuangan Islam.'
+  },
+  {
+    id: 'q-6',
+    category: 'akidah',
+    question: 'Sikap berbakti kepada kedua orang tua dalam istilah ajaran Islam dikenal dengan sebutan...',
+    options: ['Uququl Walidain', 'Birrul Walidain', 'Silaturahmi', 'Tasamuh'],
+    correctIndex: 1,
+    explanation: 'Birrul Walidain berarti berbuat baik dan berbakti kepada kedua orang tua, sedangkan Uququl Walidain adalah sikap durhaka.'
+  }
+];
+
+const DEFAULT_TRACKER_ITEMS = [
+  { id: 'subuh', label: 'Sholat Subuh Berjamaah', category: 'fardhu' },
+  { id: 'dzuhur', label: 'Sholat Dzuhur', category: 'fardhu' },
+  { id: 'ashar', label: 'Sholat Ashar', category: 'fardhu' },
+  { id: 'maghrib', label: 'Sholat Maghrib', category: 'fardhu' },
+  { id: 'isya', label: 'Sholat Isya', category: 'fardhu' },
+  { id: 'dhuha', label: 'Sholat Dhuha', category: 'sunnah' },
+  { id: 'tahajjud', label: 'Sholat Tahajjud / Witir', category: 'sunnah' },
+  { id: 'tilawah', label: 'Tilawah Al-Qur\'an (Min. 1 Maqra)', category: 'amalan' },
+  { id: 'dzikir_pagi', label: 'Dzikir Pagi', category: 'amalan' },
+  { id: 'dzikir_petang', label: 'Dzikir Petang', category: 'amalan' },
+  { id: 'sedekah', label: 'Sedekah Harian / Infaq', category: 'amalan' }
+];
+
+export default function App() {
+  // Navigation State
+  const [activeTab, setActiveTab] = useState('home'); // home, materi, materi-detail, kuis, kuis-play, tracker, catatan, structure
+  const [selectedCategory, setSelectedCategory] = useState('semua');
+  const [selectedModule, setSelectedModule] = useState(MATERI_DATA[0]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Dark Mode Theme State
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('pai_theme') === 'dark';
+    }
+    return false;
+  });
+
+  // User Gamification & Progress State
+  const [completedModules, setCompletedModules] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('pai_completed_modules');
+      return saved ? JSON.parse(saved) : ['mat-1'];
+    }
+    return ['mat-1'];
+  });
+
+  const [userXp, setUserXp] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('pai_user_xp');
+      return saved ? parseInt(saved, 10) : 150;
+    }
+    return 150;
+  });
+
+  const [userStreak, setUserStreak] = useState(5);
+
+  // Daily Mutaba'ah Tracker State
+  const [trackerDate, setTrackerDate] = useState(() => new Date().toISOString().split('T')[0]);
+  const [trackerChecks, setTrackerChecks] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('pai_tracker_data');
+      return saved ? JSON.parse(saved) : { [new Date().toISOString().split('T')[0]]: ['subuh', 'dzuhur', 'dzikir_pagi', 'tilawah'] };
+    }
+    return { [new Date().toISOString().split('T')[0]]: ['subuh', 'dzuhur', 'dzikir_pagi', 'tilawah'] };
+  });
+
+  // Personal Notes State
+  const [notes, setNotes] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('pai_notes');
+      return saved ? JSON.parse(saved) : [
+        { id: '1', title: 'Ringkasan Rukun Sholat', text: 'Tuma\'ninah sangat krusial di ruku dan sujud. Jangan terburu-buru.', date: '2026-10-05' }
+      ];
+    }
+    return [{ id: '1', title: 'Ringkasan Rukun Sholat', text: 'Tuma\'ninah sangat krusial di ruku dan sujud. Jangan terburu-buru.', date: '2026-10-05' }];
+  });
+  const [newNoteTitle, setNewNoteTitle] = useState('');
+  const [newNoteContent, setNewNoteContent] = useState('');
+
+  // Interactive Quiz Engine State
+  const [activeQuizIndex, setActiveQuizIndex] = useState(0);
+  const [userAnswers, setUserAnswers] = useState({});
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [quizTimer, setQuizTimer] = useState(120); // 120 seconds for full quiz
+  const [timerActive, setTimerActive] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [showAnswerFeedback, setShowAnswerFeedback] = useState(false);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('pai_theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('pai_theme', 'light');
+    }
+  }, [darkMode]);
+
+  useEffect(() => {
+    localStorage.setItem('pai_completed_modules', JSON.stringify(completedModules));
+  }, [completedModules]);
+
+  useEffect(() => {
+    localStorage.setItem('pai_user_xp', userXp.toString());
+  }, [userXp]);
+
+  useEffect(() => {
+    localStorage.setItem('pai_tracker_data', JSON.stringify(trackerChecks));
+  }, [trackerChecks]);
+
+  useEffect(() => {
+    localStorage.setItem('pai_notes', JSON.stringify(notes));
+  }, [notes]);
+
+  // Quiz Timer Handler
+  useEffect(() => {
+    let interval = null;
+    if (timerActive && quizTimer > 0 && !quizSubmitted) {
+      interval = setInterval(() => {
+        setQuizTimer((prev) => prev - 1);
+      }, 1000);
+    } else if (quizTimer === 0 && !quizSubmitted) {
+      setQuizSubmitted(true);
+      setTimerActive(false);
+    }
+    return () => clearInterval(interval);
+  }, [timerActive, quizTimer, quizSubmitted]);
+
+  const toggleModuleCompletion = (moduleId) => {
+    if (completedModules.includes(moduleId)) {
+      setCompletedModules(completedModules.filter(id => id !== moduleId));
+    } else {
+      setCompletedModules([...completedModules, moduleId]);
+      setUserXp(prev => prev + 50); // Award 50 XP per completed module
+    }
+  };
+
+  const toggleTrackerItem = (itemId) => {
+    const todayList = trackerChecks[trackerDate] || [];
+    let updated;
+    if (todayList.includes(itemId)) {
+      updated = todayList.filter(id => id !== itemId);
+    } else {
+      updated = [...todayList, itemId];
+    }
+    setTrackerChecks({
+      ...trackerChecks,
+      [trackerDate]: updated
+    });
+  };
+
+  const startQuiz = () => {
+    setActiveQuizIndex(0);
+    setUserAnswers({});
+    setQuizSubmitted(false);
+    setQuizTimer(120);
+    setTimerActive(true);
+    setSelectedAnswer(null);
+    setShowAnswerFeedback(false);
+    setActiveTab('kuis-play');
+  };
+
+  const handleSelectOption = (optionIndex) => {
+    if (showAnswerFeedback || quizSubmitted) return;
+    setSelectedAnswer(optionIndex);
+  };
+
+  const handleConfirmAnswer = () => {
+    if (selectedAnswer === null) return;
+    setShowAnswerFeedback(true);
+    setUserAnswers({
+      ...userAnswers,
+      [activeQuizIndex]: selectedAnswer
+    });
+  };
+
+  const handleNextQuestion = () => {
+    setSelectedAnswer(null);
+    setShowAnswerFeedback(false);
+    if (activeQuizIndex < KUIS_DATA.length - 1) {
+      setActiveQuizIndex(prev => prev + 1);
+    } else {
+      setQuizSubmitted(true);
+      setTimerActive(false);
+      // Award XP for score
+      let correct = 0;
+      KUIS_DATA.forEach((q, idx) => {
+        if (userAnswers[idx] === q.correctIndex) correct++;
+      });
+      setUserXp(prev => prev + (correct * 20));
+    }
+  };
+
+  const handleAddNote = (e) => {
+    e.preventDefault();
+    if (!newNoteTitle.trim()) return;
+    const item = {
+      id: Date.now().toString(),
+      title: newNoteTitle,
+      text: newNoteContent,
+      date: new Date().toISOString().split('T')[0]
+    };
+    setNotes([item, ...notes]);
+    setNewNoteTitle('');
+    setNewNoteContent('');
+  };
+
+  const handleDeleteNote = (id) => {
+    setNotes(notes.filter(n => n.id !== id));
+  };
+
+  // Filtered modules
+  const filteredModules = useMemo(() => {
+    return MATERI_DATA.filter(mat => {
+      const matchCat = selectedCategory === 'semua' || mat.category === selectedCategory;
+      const matchSearch = mat.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          mat.summary.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchCat && matchSearch;
+    });
+  }, [selectedCategory, searchQuery]);
+
+  // Daily Tracker Completion Calc
+  const currentDayChecks = trackerChecks[trackerDate] || [];
+  const trackerPercentage = Math.round((currentDayChecks.length / DEFAULT_TRACKER_ITEMS.length) * 100);
+
+  return (
+    <div className={`min-h-screen font-sans transition-colors duration-300 ${darkMode ? 'bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-800'}`}>
+      
+      {/* Top Navbar */}
+      <header className={`sticky top-0 z-40 border-b backdrop-blur-md ${darkMode ? 'bg-slate-900/90 border-slate-800' : 'bg-white/90 border-slate-200'}`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          
+          {/* Logo & Title */}
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveTab('home')}>
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 via-teal-600 to-amber-400 flex items-center justify-center text-white shadow-md shadow-emerald-600/20">
+              <GraduationCap className="w-6 h-6" />
+            </div>
+            <div>
+              <span className="font-bold text-lg leading-none bg-gradient-to-r from-emerald-600 via-teal-600 to-amber-500 bg-clip-text text-transparent">
+                PAI Digital
+              </span>
+              <p className="text-[10px] text-slate-400 font-medium">Pendidikan Agama Islam</p>
+            </div>
+          </div>
+
+          {/* Search Bar - Desktop */}
+          <div className="hidden md:flex items-center relative w-72">
+            <Search className="w-4 h-4 absolute left-3 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Cari materi, hadits, fikih..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className={`w-full pl-9 pr-4 py-1.5 text-sm rounded-full border transition focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
+                darkMode
+                  ? 'bg-slate-800 border-slate-700 text-slate-200 placeholder-slate-500'
+                  : 'bg-slate-100 border-slate-200 text-slate-800 placeholder-slate-400'
+              }`}
+            />
+          </div>
+
+          {/* Top Right Gamification & Theme Toggle */}
+          <div className="flex items-center space-x-3">
+            {/* Streak Counter */}
+            <div className={`flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
+              darkMode ? 'bg-amber-950/60 text-amber-400 border border-amber-800/50' : 'bg-amber-50 text-amber-700 border border-amber-200'
+            }`}>
+              <Flame className="w-4 h-4 text-amber-500 fill-amber-500 animate-pulse" />
+              <span>{userStreak} Hari</span>
+            </div>
+
+            {/* XP Badge */}
+            <div className={`flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
+              darkMode ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/50' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+            }`}>
+              <Sparkles className="w-4 h-4 text-emerald-500" />
+              <span>{userXp} XP</span>
+            </div>
+
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className={`p-2 rounded-xl transition ${
+                darkMode ? 'bg-slate-800 text-amber-400 hover:bg-slate-700' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+              title="Ganti Tema Mode"
+            >
+              {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Layout Wrapper: Sidebar + Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
+        
+        <aside className="w-full md:w-64 flex-shrink-0">
+          <div className={`sticky top-20 rounded-2xl p-4 border transition ${
+            darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200/80 shadow-sm'
+          }`}>
+            <nav className="space-y-1">
+              {[
+                { id: 'home', label: 'Beranda Utam', icon: LayoutDashboard },
+                { id: 'materi', label: 'Modul Materi', icon: BookOpen },
+                { id: 'kuis', label: 'Kuis Interaktif', icon: Award },
+                { id: 'tracker', label: 'Mutaba\'ah Yaumiyah', icon: CheckSquare },
+                { id: 'catatan', label: 'Catatan Belajar', icon: FileText },
+                { id: 'structure', label: 'Struktur Next.js', icon: FolderGit2 }
+              ].map((item) => {
+                const Icon = item.icon;
+                const isActive = activeTab === item.id || (activeTab === 'materi-detail' && item.id === 'materi') || (activeTab === 'kuis-play' && item.id === 'kuis');
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id)}
+                    className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl font-medium text-sm transition ${
+                      isActive
+                        ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/20'
+                        : darkMode
+                        ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-white' : ''}`} />
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+
+            {/* Daily Quote Box */}
+            <div className={`mt-6 p-3.5 rounded-xl border text-xs ${
+              darkMode ? 'bg-emerald-950/30 border-emerald-800/40 text-emerald-300' : 'bg-emerald-50/80 border-emerald-200/70 text-emerald-900'
+            }`}>
+              <div className="flex items-center space-x-1.5 font-semibold text-emerald-600 dark:text-emerald-400 mb-1">
+                <Star className="w-3.5 h-3.5 fill-emerald-500" />
+                <span>Mutiara Hadits</span>
+              </div>
+              <p className="italic leading-relaxed">
+                "Barangsiapa menempuh jalan untuk menuntut ilmu, maka Allah akan mudahkan baginya jalan menuju surga."
+              </p>
+              <p className="mt-1 text-[10px] opacity-75 text-right font-medium">— HR. Muslim</p>
+            </div>
+          </div>
+        </aside>
+
+        <main className="flex-1 min-w-0">
+          
+          {/* VIEW 1: HOME PAGE */}
+          {activeTab === 'home' && (
+            <div className="space-y-6">
+              
+              {/* Hero Banner */}
+              <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-emerald-800 via-teal-800 to-emerald-900 text-white p-6 sm:p-8 shadow-xl">
+                <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-amber-400/10 blur-3xl pointer-events-none"></div>
+                <div className="relative z-10 max-w-xl">
+                  <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-700/60 text-amber-300 text-xs font-semibold mb-3 border border-emerald-600">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Assalamu'alaikum, Sahabat Pembelajar</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
+                    Tingkatkan Pemahaman Agama Islam Secara Sistematis
+                  </h1>
+                  <p className="mt-2 text-emerald-100 text-sm leading-relaxed">
+                    Pelajari Al-Qur'an, Akidah, Fikih, Sejarah, dan Muamalah secara interaktif, lengkap dengan pelacak amalan ibadah harian.
+                  </p>
+                  <div className="mt-5 flex flex-wrap gap-3">
+                    <button
+                      onClick={() => setActiveTab('materi')}
+                      className="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold rounded-xl text-sm transition shadow-lg shadow-amber-400/20 flex items-center space-x-2"
+                    >
+                      <span>Mulai Belajar</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={startQuiz}
+                      className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl text-sm transition border border-white/20 flex items-center space-x-2"
+                    >
+                      <Play className="w-4 h-4 fill-white" />
+                      <span>Uji Kuis</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Progress & Quick Stats */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className={`p-4 rounded-2xl border transition ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Modul Selesai</span>
+                    <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-500">
+                      <BookOpen className="w-5 h-5" />
+                    </div>
+                  </div>
+                  <div className="mt-3 flex items-baseline space-x-2">
+                    <span className="text-2xl font-bold">{completedModules.length}</span>
+                    <span className="text-xs text-slate-400">/ {MATERI_DATA.length} Bab</span>
+                  </div>
+                  <div className="mt-2 w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div
+                      className="bg-emerald-500 h-full transition-all duration-500"
+                      style={{ width: `${(completedModules.length / MATERI_DATA.length) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div className={`p-4 rounded-2xl border transition ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Target Mutaba'ah</span>
+                    <div className="p-2 rounded-xl bg-teal-500/10 text-teal-500">
+                      <CheckSquare className="w-5 h-5" />
+                    </div>
+                  </div>
+                  <div className="mt-3 flex items-baseline space-x-2">
+                    <span className="text-2xl font-bold">{trackerPercentage}%</span>
+                    <span className="text-xs text-slate-400">Hari ini</span>
+                  </div>
+                  <div className="mt-2 w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div
+                      className="bg-teal-500 h-full transition-all duration-500"
+                      style={{ width: `${trackerPercentage}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                <div className={`p-4 rounded-2xl border transition ${darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'}`}>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Skor XP</span>
+                    <div className="p-2 rounded-xl bg-amber-500/10 text-amber-500">
+                      <Award className="w-5 h-5" />
+                    </div>
+                  </div>
+                  <div className="mt-3 flex items-baseline space-x-2">
+                    <span className="text-2xl font-bold">{userXp}</span>
+                    <span className="text-xs text-amber-500 font-medium">Level 2 (Penuntut Ilmu)</span>
+                  </div>
+                  <div className="mt-2 text-[11px] text-slate-400">
+                    +50 XP per modul, +20 XP per kuis benar
+                  </div>
+                </div>
+              </div>
+
+              {/* Learning Categories Grid */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-lg font-bold">Kategori Pembelajaran</h2>
+                  <button
+                    onClick={() => setActiveTab('materi')}
+                    className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center space-x-1"
+                  >
+                    <span>Lihat Semua</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                  {[
+                    { id: 'al-quran', name: 'Al-Qur\'an Hadis', count: '1 Bab', color: 'from-emerald-600 to-teal-600' },
+                    { id: 'akidah', name: 'Akidah Akhlak', count: '2 Bab', color: 'from-teal-600 to-cyan-600' },
+                    { id: 'fikih', name: 'Fikih', count: '1 Bab', color: 'from-emerald-700 to-green-600' },
+                    { id: 'ski', name: 'SKI', count: '1 Bab', color: 'from-amber-600 to-emerald-600' },
+                    { id: 'muamalah', name: 'Muamalah', count: '1 Bab', color: 'from-teal-700 to-emerald-800' }
+                  ].map((cat) => (
+                    <div
+                      key={cat.id}
+                      onClick={() => {
+                        setSelectedCategory(cat.id);
+                        setActiveTab('materi');
+                      }}
+                      className={`p-4 rounded-2xl border cursor-pointer transition transform hover:-translate-y-1 ${
+                        darkMode ? 'bg-slate-900 border-slate-800 hover:border-emerald-700' : 'bg-white border-slate-200 hover:shadow-md'
+                      }`}
+                    >
+                      <div className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${cat.color} flex items-center justify-center text-white mb-2 shadow-sm`}>
+                        <BookOpen className="w-4 h-4" />
+                      </div>
+                      <h3 className="text-xs font-bold leading-snug line-clamp-1">{cat.name}</h3>
+                      <p className="text-[10px] text-slate-400 mt-0.5">{cat.count}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Recommended / Popular Modules */}
+              <div>
+                <h2 className="text-lg font-bold mb-4">Modul Pilihan Hari Ini</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {MATERI_DATA.slice(0, 4).map((mod) => {
+                    const isCompleted = completedModules.includes(mod.id);
+                    return (
+                      <div
+                        key={mod.id}
+                        className={`p-5 rounded-2xl border transition flex flex-col justify-between ${
+                          darkMode ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-slate-200 hover:border-slate-300 shadow-sm'
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                              {mod.categoryLabel}
+                            </span>
+                            {isCompleted && (
+                              <span className="flex items-center space-x-1 text-xs text-emerald-500 font-medium">
+                                <CheckCircle2 className="w-3.5 h-3.5" />
+                                <span>Selesai</span>
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="font-bold text-base line-clamp-1">{mod.title}</h3>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                            {mod.summary}
+                          </p>
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                          <div className="flex items-center space-x-3 text-xs text-slate-400">
+                            <span className="flex items-center space-x-1">
+                              <Clock className="w-3.5 h-3.5" />
+                              <span>{mod.duration}</span>
+                            </span>
+                            <span>•</span>
+                            <span>{mod.level}</span>
+                          </div>
+                          <button
+                            onClick={() => {
+                              setSelectedModule(mod);
+                              setActiveTab('materi-detail');
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition"
+                          >
+                            Baca Modul
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {activeTab === 'materi' && (
+            <div className="space-y-6">
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-extrabold">Modul Pembelajaran PAI</h1>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    Pilih kategori materi untuk memulai membaca dan mendalami pemahaman Islam.
+                  </p>
+                </div>
+
+                {/* Mobile search bar if needed */}
+                <div className="relative md:hidden w-full">
+                  <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400" />
+                  <input
+                    type="text"
+                    placeholder="Cari materi..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className={`w-full pl-9 pr-4 py-2 text-xs rounded-xl border transition ${
+                      darkMode ? 'bg-slate-800 border-slate-700 text-slate-200' : 'bg-white border-slate-200'
+                    }`}
+                  />
+                </div>
+              </div>
+
+              {/* Category Filter Pills */}
+              <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none">
+                {[
+                  { id: 'semua', label: 'Semua Kategori' },
+                  { id: 'al-quran', label: 'Al-Qur\'an Hadis' },
+                  { id: 'akidah', label: 'Akidah Akhlak' },
+                  { id: 'fikih', label: 'Fikih' },
+                  { id: 'ski', label: 'Sejarah Islam' },
+                  { id: 'muamalah', label: 'Muamalah' }
+                ].map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
+                    className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition ${
+                      selectedCategory === cat.id
+                        ? 'bg-emerald-600 text-white shadow-sm'
+                        : darkMode
+                        ? 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                        : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Modules Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {filteredModules.map((mod) => {
+                  const isCompleted = completedModules.includes(mod.id);
+                  return (
+                    <div
+                      key={mod.id}
+                      className={`p-5 rounded-2xl border transition flex flex-col justify-between ${
+                        darkMode ? 'bg-slate-900 border-slate-800 hover:border-slate-700' : 'bg-white border-slate-200 hover:shadow-md'
+                      }`}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="px-2.5 py-1 rounded-md text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                            {mod.categoryLabel}
+                          </span>
+                          <span className={`text-[11px] px-2 py-0.5 rounded ${
+                            mod.level === 'Dasar' ? 'bg-blue-500/10 text-blue-500' : 'bg-amber-500/10 text-amber-500'
+                          }`}>
+                            {mod.level}
+                          </span>
+                        </div>
+
+                        <h3 className="font-bold text-lg mb-2 leading-snug">{mod.title}</h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-3 leading-relaxed">
+                          {mod.summary}
+                        </p>
+                      </div>
+
+                      <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <button
+                            onClick={() => toggleModuleCompletion(mod.id)}
+                            className={`p-1.5 rounded-lg border transition ${
+                              isCompleted
+                                ? 'bg-emerald-600 border-emerald-600 text-white'
+                                : darkMode
+                                ? 'border-slate-700 text-slate-500 hover:border-emerald-500'
+                                : 'border-slate-300 text-slate-400 hover:border-emerald-500'
+                            }`}
+                            title={isCompleted ? 'Tandai belum selesai' : 'Tandai selesai'}
+                          >
+                            <Check className="w-4 h-4" />
+                          </button>
+                          <span className="text-xs text-slate-400">
+                            {isCompleted ? 'Selesai Dibaca' : 'Belum dibaca'}
+                          </span>
+                        </div>
+
+                        <button
+                          onClick={() => {
+                            setSelectedModule(mod);
+                            setActiveTab('materi-detail');
+                          }}
+                          className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-semibold transition shadow-sm flex items-center space-x-1"
+                        >
+                          <span>Baca Sekarang</span>
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+            </div>
+          )}
+
+          {activeTab === 'materi-detail' && selectedModule && (
+            <div className="space-y-6">
+              
+              {/* Back button */}
+              <button
+                onClick={() => setActiveTab('materi')}
+                className={`inline-flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
+                  darkMode ? 'bg-slate-800 text-slate-300 hover:bg-slate-700' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Kembali ke Daftar Modul</span>
+              </button>
+
+              {/* Header Box */}
+              <div className={`p-6 sm:p-8 rounded-3xl border ${
+                darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
+              }`}>
+                <div className="flex items-center space-x-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400 mb-2">
+                  <span>{selectedModule.categoryLabel}</span>
+                  <span>•</span>
+                  <span>{selectedModule.duration} Durasi Baca</span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-extrabold leading-snug">
+                  {selectedModule.title}
+                </h1>
+                <p className="mt-3 text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                  {selectedModule.summary}
+                </p>
+
+                {/* Qur'anic / Hadith Highlight Box */}
+                <div className="mt-6 p-6 rounded-2xl bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-900 text-white border border-emerald-800/40 shadow-inner">
+                  <div className="text-right text-2xl sm:text-3xl font-serif leading-loose tracking-wide text-amber-300">
+                    {selectedModule.arabicQuote}
+                  </div>
+                  <p className="mt-3 text-xs italic text-emerald-200/90 font-mono">
+                    "{selectedModule.transliteration}"
+                  </p>
+                  <p className="mt-2 text-xs text-slate-300 border-t border-emerald-800/60 pt-2 leading-relaxed">
+                    Terjemahan: {selectedModule.translation}
+                  </p>
+                </div>
+
+                {/* Detailed Paragraphs */}
+                <div className="mt-8 space-y-4">
+                  <h3 className="text-base font-bold text-emerald-600 dark:text-emerald-400">
+                    Uraian Penjelasan Materi
+                  </h3>
+                  {selectedModule.content.map((para, idx) => (
+                    <p key={idx} className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                      {para}
+                    </p>
+                  ))}
+                </div>
+
+                {/* Summary Key Points */}
+                <div className={`mt-8 p-5 rounded-2xl border ${
+                  darkMode ? 'bg-slate-800/50 border-slate-700' : 'bg-emerald-50/50 border-emerald-100'
+                }`}>
+                  <h4 className="text-sm font-bold mb-3 flex items-center space-x-2 text-emerald-700 dark:text-emerald-400">
+                    <Sparkles className="w-4 h-4" />
+                    <span>Poin-Poin Utama Ringkasan</span>
+                  </h4>
+                  <ul className="space-y-2">
+                    {selectedModule.points.map((pt, idx) => (
+                      <li key={idx} className="flex items-start space-x-2 text-xs text-slate-700 dark:text-slate-300">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                        <span className="leading-relaxed">{pt}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Footer Complete Action */}
+                <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                  <button
+                    onClick={() => toggleModuleCompletion(selectedModule.id)}
+                    className={`px-5 py-2.5 rounded-xl font-bold text-xs transition flex items-center space-x-2 ${
+                      completedModules.includes(selectedModule.id)
+                        ? 'bg-emerald-600 text-white hover:bg-emerald-700'
+                        : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-emerald-600 hover:text-white'
+                    }`}
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>
+                      {completedModules.includes(selectedModule.id) ? 'Selesai Dipelajari (+50 XP)' : 'Tandai Selesai Modul Ini'}
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={startQuiz}
+                    className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-xs transition flex items-center space-x-1.5"
+                  >
+                    <Award className="w-4 h-4" />
+                    <span>Uji Pemahaman (Kuis)</span>
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+          )}
+
+          {activeTab === 'kuis' && (
+            <div className="space-y-6">
+              
+              <div className="p-8 rounded-3xl bg-gradient-to-r from-emerald-900 via-teal-900 to-slate-900 text-white relative overflow-hidden shadow-xl">
+                <div className="relative z-10 max-w-lg">
+                  <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-semibold mb-3">
+                    <Award className="w-4 h-4" />
+                    <span>Uji Wawasan Agama Islam</span>
+                  </div>
+                  <h1 className="text-2xl sm:text-3xl font-extrabold">Kuis Interaktif PAI</h1>
+                  <p className="mt-2 text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Uji sejauh mana pemahaman kamu mengenai Al-Qur'an, Akidah, Fikih, dan Sejarah Islam. Dapatkan skor XP dan pembahasan lengkap langsung!
+                  </p>
+                  
+                  <div className="mt-6 flex items-center space-x-4 text-xs text-emerald-200">
+                    <span className="flex items-center space-x-1">
+                      <HelpCircle className="w-4 h-4 text-amber-400" />
+                      <span>{KUIS_DATA.length} Soal Pilihan Ganda</span>
+                    </span>
+                    <span>•</span>
+                    <span className="flex items-center space-x-1">
+                      <Clock className="w-4 h-4 text-amber-400" />
+                      <span>Waktu 2 Menit</span>
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={startQuiz}
+                    className="mt-6 px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-extrabold text-sm shadow-lg shadow-amber-500/20 transition flex items-center space-x-2"
+                  >
+                    <Play className="w-4 h-4 fill-slate-950" />
+                    <span>Mulai Kuis Sekarang</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Sample Quiz Questions Preview */}
+              <div>
+                <h3 className="font-bold text-base mb-3">Topik Soal yang Diujikan</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {KUIS_DATA.map((q, idx) => (
+                    <div
+                      key={q.id}
+                      className={`p-4 rounded-2xl border ${
+                        darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between text-xs text-slate-400 mb-1">
+                        <span>Soal #{idx + 1}</span>
+                        <span className="capitalize text-emerald-500 font-semibold">{q.category}</span>
+                      </div>
+                      <p className="text-xs font-semibold text-slate-700 dark:text-slate-300 line-clamp-2">
+                        {q.question}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {/* ACTIVE QUIZ PLAY SCREEN */}
+          {activeTab === 'kuis-play' && (
+            <div className="space-y-6 max-w-2xl mx-auto">
+              
+              {!quizSubmitted ? (
+                <div className={`p-6 sm:p-8 rounded-3xl border transition ${
+                  darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-md'
+                }`}>
+                  {/* Timer & Progress Header */}
+                  <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+                    <div className="text-xs font-bold text-slate-400">
+                      Soal <span className="text-emerald-500 text-base">{activeQuizIndex + 1}</span> / {KUIS_DATA.length}
+                    </div>
+
+                    <div className={`flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-extrabold ${
+                      quizTimer < 30 ? 'bg-red-500/10 text-red-500 border border-red-500/30' : 'bg-slate-100 dark:bg-slate-800 text-emerald-500'
+                    }`}>
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>{Math.floor(quizTimer / 60)}:{(quizTimer % 60).toString().padStart(2, '0')}</span>
+                    </div>
+                  </div>
+
+                  {/* Question Text */}
+                  <div className="mt-6">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-500/10 text-emerald-500">
+                      {KUIS_DATA[activeQuizIndex].category}
+                    </span>
+                    <h2 className="text-base sm:text-lg font-bold mt-2 leading-relaxed">
+                      {KUIS_DATA[activeQuizIndex].question}
+                    </h2>
+                  </div>
+
+                  {/* Multiple Choice Options */}
+                  <div className="mt-6 space-y-3">
+                    {KUIS_DATA[activeQuizIndex].options.map((opt, optIdx) => {
+                      const isSelected = selectedAnswer === optIdx;
+                      const isCorrect = optIdx === KUIS_DATA[activeQuizIndex].correctIndex;
+                      
+                      let btnStyle = darkMode
+                        ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-750'
+                        : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100';
+
+                      if (isSelected) {
+                        btnStyle = 'border-2 border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold';
+                      }
+
+                      if (showAnswerFeedback) {
+                        if (isCorrect) {
+                          btnStyle = 'border-2 border-emerald-500 bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 font-bold';
+                        } else if (isSelected && !isCorrect) {
+                          btnStyle = 'border-2 border-red-500 bg-red-500/20 text-red-600 dark:text-red-400 font-bold';
+                        }
+                      }
+
+                      return (
+                        <button
+                          key={optIdx}
+                          onClick={() => handleSelectOption(optIdx)}
+                          disabled={showAnswerFeedback}
+                          className={`w-full p-4 rounded-2xl border text-left text-xs sm:text-sm transition flex items-center justify-between ${btnStyle}`}
+                        >
+                          <span className="leading-snug">{opt}</span>
+                          {showAnswerFeedback && isCorrect && (
+                            <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 ml-2" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Immediate Explanation Feedback */}
+                  {showAnswerFeedback && (
+                    <div className="mt-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-900 dark:text-emerald-200">
+                      <div className="font-bold mb-1 flex items-center space-x-1 text-emerald-600 dark:text-emerald-400">
+                        <Sparkles className="w-4 h-4" />
+                        <span>Pembahasan & Dalil:</span>
+                      </div>
+                      <p className="leading-relaxed">{KUIS_DATA[activeQuizIndex].explanation}</p>
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div className="mt-8 flex justify-end">
+                    {!showAnswerFeedback ? (
+                      <button
+                        onClick={handleConfirmAnswer}
+                        disabled={selectedAnswer === null}
+                        className={`px-6 py-2.5 rounded-xl font-bold text-xs transition ${
+                          selectedAnswer !== null
+                            ? 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-md'
+                            : 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
+                        }`}
+                      >
+                        Kunci Jawaban
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleNextQuestion}
+                        className="px-6 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-extrabold text-xs transition shadow-md flex items-center space-x-1.5"
+                      >
+                        <span>{activeQuizIndex < KUIS_DATA.length - 1 ? 'Soal Berikutnya' : 'Lihat Hasil Akhir'}</span>
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+
+                </div>
+              ) : (
+                /* QUIZ RESULT SUMMARY SCREEN */
+                <div className={`p-8 rounded-3xl border text-center transition ${
+                  darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-xl'
+                }`}>
+                  <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-emerald-500 to-amber-400 flex items-center justify-center text-white shadow-lg shadow-emerald-500/30">
+                    <Award className="w-10 h-10" />
+                  </div>
+
+                  <h2 className="text-2xl font-extrabold mt-4">Kuis Selesai!</h2>
+                  <p className="text-xs text-slate-400 mt-1">Alhamdulillah, berikut rangkuman hasil kuis kamu:</p>
+
+                  {/* Score Board */}
+                  {(() => {
+                    let correctCount = 0;
+                    KUIS_DATA.forEach((q, idx) => {
+                      if (userAnswers[idx] === q.correctIndex) correctCount++;
+                    });
+                    const finalScore = Math.round((correctCount / KUIS_DATA.length) * 100);
+
+                    return (
+                      <div className="mt-6 p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700">
+                        <div className="text-4xl font-black text-emerald-600 dark:text-emerald-400">
+                          {finalScore} <span className="text-sm font-normal text-slate-400">/ 100</span>
+                        </div>
+                        <p className="text-xs font-semibold mt-2 text-slate-600 dark:text-slate-300">
+                          Jawaban Benar: {correctCount} dari {KUIS_DATA.length} Soal
+                        </p>
+                        <p className="text-[11px] text-amber-500 mt-1 font-medium">
+                          Bonus +{correctCount * 20} XP Ditambahkan ke Profil!
+                        </p>
+                      </div>
+                    );
+                  })()}
+
+                  <div className="mt-8 flex justify-center space-x-3">
+                    <button
+                      onClick={startQuiz}
+                      className="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-slate-700 font-bold text-xs hover:bg-slate-100 dark:hover:bg-slate-800 transition flex items-center space-x-2"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                      <span>Ulangi Kuis</span>
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('materi')}
+                      className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition shadow-md"
+                    >
+                      Kembali Belajar
+                    </button>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          )}
+
+          {activeTab === 'tracker' && (
+            <div className="space-y-6">
+              
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h1 className="text-2xl font-extrabold">Pelacak Ibadah Harian (Mutaba'ah)</h1>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    Catat amalan sholat, tilawah, dan dzikir harian untuk menjaga istiqomah.
+                  </p>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Calendar className="w-4 h-4 text-emerald-500" />
+                  <input
+                    type="date"
+                    value={trackerDate}
+                    onChange={(e) => setTrackerDate(e.target.value)}
+                    className={`px-3 py-1.5 text-xs rounded-xl border font-medium ${
+                      darkMode ? 'bg-slate-800 border-slate-700 text-slate-200' : 'bg-white border-slate-200 text-slate-700'
+                    }`}
+                  />
+                </div>
+              </div>
+
+              {/* Day Progress Indicator */}
+              <div className={`p-6 rounded-3xl border ${
+                darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
+              }`}>
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <span className="text-xs font-bold text-slate-400">Capaian Tanggal: {trackerDate}</span>
+                    <h2 className="text-lg font-bold">Keterisian Amalan: {trackerPercentage}%</h2>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-2xl font-black text-emerald-500">{currentDayChecks.length}</span>
+                    <span className="text-xs text-slate-400"> / {DEFAULT_TRACKER_ITEMS.length} Amalan</span>
+                  </div>
+                </div>
+
+                <div className="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
+                  <div
+                    className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-500"
+                    style={{ width: `${trackerPercentage}%` }}
+                  ></div>
+                </div>
+              </div>
+
+              {/* Daily Checklist Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {DEFAULT_TRACKER_ITEMS.map((item) => {
+                  const isChecked = currentDayChecks.includes(item.id);
+                  return (
+                    <div
+                      key={item.id}
+                      onClick={() => toggleTrackerItem(item.id)}
+                      className={`p-4 rounded-2xl border cursor-pointer transition flex items-center justify-between ${
+                        isChecked
+                          ? 'bg-emerald-500/10 border-emerald-500/40 text-emerald-900 dark:text-emerald-200'
+                          : darkMode
+                          ? 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+                          : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-6 h-6 rounded-lg flex items-center justify-center border transition ${
+                          isChecked
+                            ? 'bg-emerald-600 border-emerald-600 text-white'
+                            : 'border-slate-300 dark:border-slate-600'
+                        }`}>
+                          {isChecked && <Check className="w-4 h-4 stroke-[3]" />}
+                        </div>
+                        <div>
+                          <p className={`text-xs font-bold ${isChecked ? 'line-through opacity-80' : ''}`}>
+                            {item.label}
+                          </p>
+                          <span className="text-[10px] text-slate-400 capitalize">
+                            Kategori: {item.category}
+                          </span>
+                        </div>
+                      </div>
+
+                      <span className={`text-[10px] px-2 py-0.5 rounded font-semibold ${
+                        item.category === 'fardhu' ? 'bg-amber-500/10 text-amber-500' : 'bg-teal-500/10 text-teal-500'
+                      }`}>
+                        {item.category}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Weekly History Chart Simulation */}
+              <div className={`p-6 rounded-3xl border ${
+                darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
+              }`}>
+                <h3 className="text-sm font-bold mb-4 flex items-center space-x-2">
+                  <BarChart3 className="w-4 h-4 text-emerald-500" />
+                  <span>Grafik Keistiqomahan Pekan Ini</span>
+                </h3>
+
+                <div className="flex items-end justify-between h-32 pt-4 px-2">
+                  {['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'].map((day, idx) => {
+                    const heights = [70, 85, 60, 90, 100, 75, trackerPercentage];
+                    const h = heights[idx];
+                    return (
+                      <div key={day} className="flex flex-col items-center space-y-2 flex-1">
+                        <div className="w-full max-w-[28px] bg-slate-100 dark:bg-slate-800 rounded-t-lg h-24 relative flex items-end">
+                          <div
+                            className="w-full bg-gradient-to-t from-emerald-600 to-teal-400 rounded-t-lg transition-all duration-500"
+                            style={{ height: `${h}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-[10px] font-semibold text-slate-400">{day}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+            </div>
+          )}
+
+          {activeTab === 'catatan' && (
+            <div className="space-y-6">
+              
+              <div>
+                <h1 className="text-2xl font-extrabold">Catatan Belajar Pribadi</h1>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Tuliskan poin penting, hikmah, atau pertanyaan saat membaca materi PAI.
+                </p>
+              </div>
+
+              {/* New Note Form */}
+              <form onSubmit={handleAddNote} className={`p-5 rounded-2xl border ${
+                darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
+              }`}>
+                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+                  Buat Catatan Baru
+                </h3>
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Judul Catatan..."
+                    value={newNoteTitle}
+                    onChange={(e) => setNewNoteTitle(e.target.value)}
+                    className={`w-full px-3.5 py-2 text-xs rounded-xl border transition ${
+                      darkMode ? 'bg-slate-800 border-slate-700 text-slate-200' : 'bg-slate-50 border-slate-200'
+                    }`}
+                  />
+                  <textarea
+                    rows={3}
+                    placeholder="Isi catatan, faidah, atau pengingat..."
+                    value={newNoteContent}
+                    onChange={(e) => setNewNoteContent(e.target.value)}
+                    className={`w-full px-3.5 py-2 text-xs rounded-xl border transition ${
+                      darkMode ? 'bg-slate-800 border-slate-700 text-slate-200' : 'bg-slate-50 border-slate-200'
+                    }`}
+                  />
+                  <button
+                    type="submit"
+                    className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center space-x-1"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Simpan Catatan</span>
+                  </button>
+                </div>
+              </form>
+
+              {/* Notes List */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {notes.map((note) => (
+                  <div
+                    key={note.id}
+                    className={`p-4 rounded-2xl border flex flex-col justify-between ${
+                      darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+                        <span>{note.date}</span>
+                        <button
+                          onClick={() => handleDeleteNote(note.id)}
+                          className="text-red-400 hover:text-red-500"
+                          title="Hapus Catatan"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                      <h4 className="font-bold text-sm mb-1">{note.title}</h4>
+                      <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">
+                        {note.text}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          )}
+
+          {activeTab === 'structure' && (
+            <div className="space-y-6">
+              
+              <div>
+                <h1 className="text-2xl font-extrabold flex items-center space-x-2">
+                  <FolderGit2 className="w-7 h-7 text-emerald-500" />
+                  <span>Arsitektur Kode & Deployment Vercel</span>
+                </h1>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                  Panduan lengkap struktur folder Next.js App Router agar dapat dipindahkan ke GitHub dan dideploy langsung ke Vercel tanpa error.
+                </p>
+              </div>
+
+              {/* Folder Tree Box */}
+              <div className={`p-6 rounded-3xl border ${
+                darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
+              }`}>
+                <h3 className="text-sm font-bold text-emerald-600 dark:text-emerald-400 mb-3">
+                  Struktur Folder Next.js App Router (Modular)
+                </h3>
+                <pre className="p-4 rounded-2xl bg-slate-950 text-emerald-400 text-xs font-mono overflow-x-auto leading-relaxed">
+{`pai-learning-app/
+├── app/
+│   ├── layout.tsx         # Root layout with Tailwind CSS & metadata
+│   ├── page.tsx           # Home Dashboard Component
+│   ├── materi/
+│   │   ├── page.tsx       # Module listing page
+│   │   └── [id]/page.tsx  # Dynamic lesson detail view
+│   ├── kuis/
+│   │   └── page.tsx       # Interactive Quiz Engine component
+│   ├── tracker/
+│   │   └── page.tsx       # Mutaba'ah daily habit checklist
+│   └── globals.css        # Tailwind directives (@tailwind base, etc.)
+├── data/
+│   ├── materi.json        # JSON data store for modules
+│   └── kuis.json          # JSON data store for quiz questions
+├── public/                # Static assets (images, icons, manifest)
+├── package.json           # Dependencies (next, react, lucide-react, tailwindcss)
+├── tailwind.config.js     # Custom theme configuration (emerald & gold)
+└── tsconfig.json          # TypeScript configuration`}
+                </pre>
+              </div>
+
+              {/* Deployment Steps */}
+              <div className={`p-6 rounded-3xl border space-y-4 ${
+                darkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
+              }`}>
+                <h3 className="text-sm font-bold text-amber-500">
+                  Langkah-Langkah Deploy ke Vercel via GitHub:
+                </h3>
+
+                <ol className="list-decimal list-inside space-y-3 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                  <li className="font-semibold">
+                    Buat Repository Baru di GitHub:
+                    <p className="font-normal text-slate-500 mt-0.5">
+                      Buka GitHub, klik 'New Repository', beri nama misalnya <code className="text-emerald-500">pai-learning-app</code>.
+                    </p>
+                  </li>
+                  <li className="font-semibold">
+                    Inisialisasi Project Next.js di Komputer:
+                    <div className="mt-1 p-2 rounded-xl bg-slate-950 text-slate-300 font-mono text-[11px]">
+                      npx create-next-app@latest pai-learning-app --typescript --tailwind --app
+                    </div>
+                  </li>
+                  <li className="font-semibold">
+                    Push Kode Ke GitHub:
+                    <div className="mt-1 p-2 rounded-xl bg-slate-950 text-slate-300 font-mono text-[11px]">
+                      git add . && git commit -m "Initial commit" && git push origin main
+                    </div>
+                  </li>
+                  <li className="font-semibold">
+                    Hubungkan ke Vercel:
+                    <p className="font-normal text-slate-500 mt-0.5">
+                      Masuk ke dashboard Vercel.com, klik 'Add New' &rarr; 'Project', pilih repository GitHub kamu, lalu klik <b>Deploy</b>. Vercel akan memproses build secara otomatis tanpa error!
+                    </p>
+                  </li>
+                </ol>
+              </div>
+
+            </div>
+          )}
+
+        </main>
+      </div>
+
+      {/* Mobile Bottom Quick Navigation Bar */}
+      <div className={`md:hidden fixed bottom-0 left-0 right-0 border-t backdrop-blur-md z-40 px-3 py-2 flex items-center justify-around ${
+        darkMode ? 'bg-slate-900/95 border-slate-800' : 'bg-white/95 border-slate-200'
+      }`}>
+        {[
+          { id: 'home', label: 'Beranda', icon: LayoutDashboard },
+          { id: 'materi', label: 'Materi', icon: BookOpen },
+          { id: 'kuis', label: 'Kuis', icon: Award },
+          { id: 'tracker', label: 'Mutaba\'ah', icon: CheckSquare },
+          { id: 'catatan', label: 'Catatan', icon: FileText }
+        ].map((item) => {
+          const Icon = item.icon;
+          const isActive = activeTab === item.id || (activeTab === 'materi-detail' && item.id === 'materi') || (activeTab === 'kuis-play' && item.id === 'kuis');
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={`flex flex-col items-center py-1 px-2 rounded-xl transition ${
+                isActive ? 'text-emerald-500 font-bold' : 'text-slate-400'
+              }`}
+            >
+              <Icon className="w-5 h-5" />
+              <span className="text-[10px] mt-1">{item.label}</span>
+            </button>
+          );
+        })}
+      </div>
+
+    </div>
+  );
+}
